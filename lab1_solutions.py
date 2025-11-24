@@ -18,6 +18,9 @@ from langgraph.checkpoint.memory import MemorySaver
 from langchain_groq import ChatGroq
 from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 
+from getpass import getpass
+from dotenv import load_dotenv
+
 
 # ============================================================================
 # State Definition
@@ -43,7 +46,7 @@ def get_llm():
     api_key = os.getenv("GROQ_API_KEY")
     if not api_key:
         raise ValueError("GROQ_API_KEY not found")
-    return ChatGroq(model="llama-3.1-8b-instant", temperature=0.3, groq_api_key=api_key)
+    return ChatGroq(model="llama-3.1-8b-instant")
 
 
 # ============================================================================
@@ -701,6 +704,14 @@ if __name__ == "__main__":
     print("LAB 1 EXERCISE SOLUTIONS")
     print("="*80)
     
+    # Load environment variables from .env
+    load_dotenv()
+
+    if "GROQ_API_KEY" not in os.environ:
+        os.environ["GROQ_API_KEY"] = getpass("Enter your GROQ API Key: ")
+
+    print("✅ API Key configured")
+
     # Run all solutions
     solution_1_interrupt_after()
     solution_2_multiple_interrupts()
